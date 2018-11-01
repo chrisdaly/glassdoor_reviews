@@ -15,7 +15,7 @@ def test_parse_review_page():
 	    "filter.defaultLocation": False    
 	}
 
-	url = 'https://www.glassdoor.co.uk/Reviews/Vertex-Pharmaceuticals-Reviews-E2080.htm'		# 
+	url = 'https://www.glassdoor.co.uk/Reviews/Vertex-Pharmaceuticals-Reviews-E2080.htm'
 	r = requests.get(url, headers=headers, params=params)
 	rp = ReviewPage.from_response(r)
 	assert rp.next_page_url == 'https://www.glassdoor.co.uk/Reviews/Vertex-Pharmaceuticals-Reviews-E2080_P2.htm?filter.defaultEmploymentStatuses=false&filter.defaultLocation=false'

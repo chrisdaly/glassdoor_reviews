@@ -11,15 +11,15 @@ def test_parse_review_page():
 	}
 
 	params = {
-	    "filter.defaultEmploymentStatuses": False, 
-	    "filter.defaultLocation": False    
+	    "filter.defaultEmploymentStatuses": False,
+	    "filter.defaultLocation": False
 	}
 
 	url = 'https://www.glassdoor.co.uk/Reviews/Vertex-Pharmaceuticals-Reviews-E2080.htm'
 	r = requests.get(url, headers=headers, params=params)
 	rp = ReviewPage.from_response(r)
 	assert rp.next_page_url == 'https://www.glassdoor.co.uk/Reviews/Vertex-Pharmaceuticals-Reviews-E2080_P2.htm?filter.defaultEmploymentStatuses=false&filter.defaultLocation=false'
-	
+
 if __name__ == '__main__':
 	test_parse_review_page()
 	print('passed')

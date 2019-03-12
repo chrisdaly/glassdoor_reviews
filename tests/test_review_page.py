@@ -56,20 +56,13 @@ class TestLiveReviewPage(unittest.TestCase):
 
     def setUp(self):
         url = "https://www.glassdoor.co.uk/Reviews/Employee-Review-Vertex-Pharmaceuticals-RVW24494015.htm"
-        headers = {
-            "user-agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Mobile Safari/537.36"
-        }
-
-        params = {
-            "filter.defaultEmploymentStatuses": False,
-            "filter.defaultLocation": False
-        }
-
+        headers = {"user-agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Mobile Safari/537.36"}
+        params = {"filter.defaultEmploymentStatuses": False, "filter.defaultLocation": False}
         response = requests.get(url, headers=headers, params=params)
         assert response.ok
-        soup = BS(response.text, "html5lib")
+        soup = BS(response.text, "lxml")
         # When you specify a review id in the URL, the review appears it its own div, not in an OL.
-        review = soup.find("div", class_="pad empReview cf ")
+        review = soup.find("div", class_="empReview")
         self.review = Review(review)
 
     def test_review_parsing(self):
@@ -80,7 +73,7 @@ class TestLiveReviewPage(unittest.TestCase):
             'millions. Scientists are frantically searching for new leads as CSO '
             'comes up with nothing but nonsense.',
             'date': '2019-02-01',
-            'helpful': '0',
+            'helpful': None,
             'id': '24494015',
             'link': None,
             'location': 'Abingdon, England',
@@ -101,6 +94,8 @@ class TestLiveReviewPage(unittest.TestCase):
         }
 
         parsed_data = self.review.parse()
+        # Reviews can be updated (e.g. a new person clicks the "helpful" button), => only compare non-metric fields.
+        parsed_data["helpful"] = None
         self.assertDictEqual(expected_data, parsed_data)
 
 
@@ -114,6 +109,5 @@ if __name__ == '__main__':
         suites_list.append(suite)
 
     big_suite = unittest.TestSuite(suites_list)
-
     runner = unittest.TextTestRunner()
     results = runner.run(big_suite)

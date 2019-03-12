@@ -9,14 +9,15 @@ class ReviewPage(object):
     @property
     def review_containers(self):
         review_feed = self.soup.find("ol", class_="empReviews")
-        review_containers = review_feed.findChildren("li", recursive=False)
-        return review_containers
+        if review_feed is not None:
+            review_containers = review_feed.findChildren("li", recursive=False)
+            return review_containers
 
     @property
     def next_page_url(self):
-        atag = self.soup.find("li", "next").find("a")
+        atag = self.soup.find("li", class_="next")
         if atag is not None:
-            return "https://www.glassdoor.co.uk" + atag["href"]
+            return "https://www.glassdoor.co.uk" + atag.a["href"]
 
     def reviews(self):
         for rc in self.review_containers:
@@ -31,3 +32,7 @@ class ReviewPage(object):
     def from_html(cls, html):
         soup = BS(html, "lxml")
         return cls(soup)
+
+
+if __name__ == '__main__':
+    url = "https://www.glassdoor.co.uk/Reviews/Aetna-Reviews-E16_P234.htm?filter.defaultEmploymentStatuses=false&filter.defaultLocation=false"

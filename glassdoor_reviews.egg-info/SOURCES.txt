@@ -1,0 +1,12 @@
+MANIFEST.in
+README.rst
+setup.py
+glassdoor_reviews/__init__.py
+glassdoor_reviews/review.py
+glassdoor_reviews/review_page.py
+glassdoor_reviews.egg-info/PKG-INFO
+glassdoor_reviews.egg-info/SOURCES.txt
+glassdoor_reviews.egg-info/dependency_links.txt
+glassdoor_reviews.egg-info/not-zip-safe
+glassdoor_reviews.egg-info/requires.txt
+glassdoor_reviews.egg-info/top_level.txt

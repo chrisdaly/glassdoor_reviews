@@ -15,9 +15,9 @@ class ReviewPage(object):
 
     @property
     def next_page_url(self):
-        atag = self.soup.find("li", class_="next")
-        if atag is not None:
-            return "https://www.glassdoor.co.uk" + atag.a["href"]
+        atag = self.soup.find("li", class_=lambda x: "next" in x if x else None)
+        if (atag is not None) and atag.a:
+            return 'https://www.glassdoor.co.uk{}'.format(atag.a["href"])
 
     def reviews(self):
         for rc in self.review_containers:
